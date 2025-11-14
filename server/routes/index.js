@@ -6,12 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Home' });
 });
 
-router.get('/index', function(req, res, next) {
+router.get('/home', function(req, res, next) {
   res.render('index', { title: 'Home' });
-});
-
-router.get('/movie', function(req, res, next) {
-  res.render('movie', { title: 'Create Movie' });
 });
 
 module.exports = router;

@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row">
+        <div class="offset-md-3 col-md-6">
+            <h1><%=title%></h1>
+
+            <form class="form" method="post">
+                <div class="form-group">
+                    <label for="nameTextField">Movie Title</label>
+                    <input type="text" class="form-control"
+                    id="nameTextField"
+                    placeholder="Enter the Movie title"
+                    name="name" 
+                    value="<%= Movie.name%>"
+                    required>
+                </div>
+                <div class="form-group">
+                    <label for="descriptionTextField">Description</label>
+                    <input type="text" class="form-control"
+                    id="descriptionTextField"
+                    placeholder="Enter the movie description"
+                    name="description" 
+                    value="<%= Movie.description%>"
+                    required>
+                </div>
+                <div class="form-group">
+                    <label for="releaseTextField">Year of release</label>
+                    <input type="text" class="form-control"
+                    id="releaseTextField"
+                    placeholder="Enter the year of release"
+                    name="release" 
+                    value="<%= Movie.release%>"
+                    required>
+                </div>
+                <div class="form-group">
+                    <label for="durationTextField">Duration</label>
+                    <input type="text" class="form-control"
+                    id="durationTextField"
+                    placeholder="Enter the duration in minutes"
+                    name="duration" 
+                    value="<%= Movie.duration%>"
+                    required>
+                </div>
+                <div class="form-group">
+                    <label for="timeframeTextField">Timeframe</label>
+                    <input type="text" class="form-control"
+                    id="timeframeTextField"
+                    placeholder="Enter the timeframe it will be in theaters"
+                    name="timeframe" 
+                    value="<%= Movie.timeframe%>"
+                    required>
+                </div>
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-edit"></i> Submit
+                </button>
+                <a href="/movies" class="btn btn-warning">
+                    <i class="fas fa-undo"></i> Cancel
+                </a>
+
+            </form>
+        </div>
+    </div>
+</div>

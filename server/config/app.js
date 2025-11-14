@@ -6,7 +6,6 @@ var logger = require('morgan');
 
 var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
-
 //Added connections from DB
 let mongoose = require('mongoose');
 let DB = require('./db');
@@ -28,8 +27,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../public')));
-app.use(express.static(path.join(__dirname, '../node_modules')));
+app.use(express.static(path.join(__dirname, '../../public')));
+app.use(express.static(path.join(__dirname, '../../node_modules')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
