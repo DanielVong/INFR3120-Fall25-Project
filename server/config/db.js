@@ -1,1 +1,0 @@
-module.exports={"URI":"mongodb+srv://danielvong:e2eaPIDrcfmYL6ws@cluster0.xd4ckxx.mongodb.net/movietheater"};
