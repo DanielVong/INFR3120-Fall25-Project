@@ -3,14 +3,9 @@
 <div>
     <a href="/home">Home</a>
 </div>
-
-<div>
-    <a href="/movies/add" class="btn btn-primary" role="button">Add New Movie</a>
-</div>
-
 <div style="margin: 20px;">
     <h3>Movie List</h3>
-    <% if (MovieList && MovieList.length > 0) { %>
+    <a href="/movies/add" class="btn btn-primary" role="button">Add New Movie</a>
     <table border="1" cellpadding="10" style="width: 100%">
         <thead>
             <tr>
@@ -19,17 +14,17 @@
                 <th>Year of Release</th>
                 <th>Duration (min)</th>
                 <th>Timeframe</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <% MovieList.forEach(function(movie) { %>
+                <% for(let count = 0; count<MovieList.length;count++){%>
                 <tr>
-                    <td><%= movie.name %></td>
-                    <td><%= movie.description %></td>
-                    <td><%= movie.release %></td>
-                    <td><%= movie.duration %></td>
-                    <td>
+                    <td><%= MovieList[count].name %></td>
+                    <td><%= MovieList[count].description %></td>
+                    <td><%= MovieList[count].release %></td>
+                    <td><%= MovieList[count].duration %></td>
+                    <td><%= MovieList[count].timeframe %></td>
+                      <td>
                         <a href="/movies/edit/<%=MovieList[count]._id%>" 
                         class="btn btn-primary btn-sm">
                         <i class="fas fa-pencil-alt"></i>Edit</a>
@@ -41,10 +36,7 @@
                         </td>
                     </td>
                 </tr>
-            <% }); %>
+            <% } %>
         </tbody>
     </table>
-    <% } else { %>
-        <p>No movies available.</p>
-    <% } %> 
 </div>
