@@ -1,6 +1,50 @@
-<h1>Test</h1>
+<h1>Movies</h1>
 
 <div>
     <a href="/home">Home</a>
-    <a href="/movies">Movies</a>
+</div>
+
+<div>
+    <a href="/movies/add" class="btn btn-primary" role="button">Add New Movie</a>
+</div>
+
+<div style="margin: 20px;">
+    <h3>Movie List</h3>
+    <% if (MovieList && MovieList.length > 0) { %>
+    <table border="1" cellpadding="10" style="width: 100%">
+        <thead>
+            <tr>
+                <th>Movie Title</th>
+                <th>Description</th>
+                <th>Year of Release</th>
+                <th>Duration (min)</th>
+                <th>Timeframe</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% MovieList.forEach(function(movie) { %>
+                <tr>
+                    <td><%= movie.name %></td>
+                    <td><%= movie.description %></td>
+                    <td><%= movie.release %></td>
+                    <td><%= movie.duration %></td>
+                    <td>
+                        <a href="/movies/edit/<%=MovieList[count]._id%>" 
+                        class="btn btn-primary btn-sm">
+                        <i class="fas fa-pencil-alt"></i>Edit</a>
+                    </td>
+                     <td class="text-center col-2">
+                    <a href="/movies/delete/<%= MovieList[count]._id%>" 
+                        class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i>Delete</a>
+                        </td>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <% } else { %>
+        <p>No movies available.</p>
+    <% } %> 
 </div>
