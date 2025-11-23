@@ -4,12 +4,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
-var indexRouter = require('../routes/index');
-var usersRouter = require('../routes/users');
 //Added connections from DB
 let mongoose = require('mongoose');
 let DB = require('./db');
-let moviesRouter = require('../routes/movie');
+let session = require('express-session');
+let passport = require('passport');
+let passportLocal = require('passport-local');
+let localStrategy = passportLocal.Strategy;
+let flash = require('connect-flash');
+let cors = require('cors')
+var app = express();
+let userModel = require('../models/user');
+let User = userModel.User;
+
 //Test DB Connection
 mongoose.connect(DB.URI);
 let mongoDB = mongoose.connection;
@@ -17,8 +24,26 @@ mongoDB.on('error',console.error.bind(console,'Connection error'));
 mongoDB.once('open',()=>{
   console.log('Connected to the MongoDB');
 })
-var app = express();
+// Set-up Express Session
+app.use(session({
+  secret:"Somesecret",
+  saveUninitialized:false,
+  resave:false
+}))
+// initialize flash
+app.use(flash());
+// user authentication
+passport.use(User.createStrategy());
+// serialize and deserialize the user information
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+// initialize the passport
+app.use(passport.initialize());
+app.use(passport.session());
+var indexRouter = require('../routes/index');
+var usersRouter = require('../routes/users');
 
+let moviesRouter = require('../routes/movie');
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');

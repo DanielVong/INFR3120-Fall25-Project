@@ -1,24 +1,5 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Movienator</title>
-    </head>
-    <body>
-        <div id="wrapper">
-        <div>
-            <h1>Movienator</h1>
-        <figure>
-            <img src="/Asset/images/Group7Logo.png" alt="Description of photo" width="300" height="300">
-            <figcaption>Group 7</figcaption>
-        </figure>
-        </div>
-
-        <div>
-          <a href="/movies">View Movies</a>
-        </div>
-        <footer>
-            <p> &copy; Group 7: Gavin Dizon 100961344, Daniel Vong 100870344, Alamjeet Singh Dhaliwal</p>
-        </footer>
-    </body>
-</html>
+<%- include ./partials/header.ejs %>
+<%- include ./partials/main_nav.ejs %>
+    <h1>Welcome to our <%= title %> theatre database website!</h1>
+    <p>Please register for an account to the database!</p>
+<%- include ./partials/footer.ejs %>
