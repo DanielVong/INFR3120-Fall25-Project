@@ -6,11 +6,50 @@ let userModel = require('../models/user');
 let User = userModel.User;
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Home' });
+  res.render('index', { title: 'Home', displayName: req.user?req.user.displayName:"" });
 });
 
 router.get('/home', function(req, res, next) {
-  res.render('index', { title: 'Home' });
+  res.render('index', { title: 'Home', displayName: req.user?req.user.displayName:"" });
+});
+// Get method for login
+router.get('/login', function(req,res,next){
+  if(!req.user)
+  {
+    res.render('auth/login',
+      {
+      title:'Login',
+      message: req.flash('loginMessage')
+      }
+
+    )
+  }
+  else
+  {
+    return res.redirect("/")
+  }
+});
+
+// Post method for login
+router.post('/login', function(req,res,next){
+  passport.authenticate('local',(err,user,info)=>{
+    if(err)
+    {
+      return next(err);
+    }
+    if(!user)
+    {
+      req.flash('loginMessage','AuthenticationError');
+      return res.redirect('/login');
+    }
+    req.login(user,(err)=>{
+    if(err)
+    {
+      return next(err);
+    }
+    return res.redirect("/movies")
+    })
+  })(req,res,next)
 });
 // Get method for register
 router.get('/register', function(req,res,next){
@@ -33,7 +72,7 @@ router.get('/register', function(req,res,next){
 router.post('/register', function(req,res,next){
   let newUser = new User({
     username: req.body.username,
-    //password: req.body.password,
+    password: req.body.password,
     email:req.body.email,
     displayName: req.body.displayName
   })
@@ -70,44 +109,6 @@ req.logout(function(err)
 res.redirect("/");
 })
 
-// Get method for login
-router.get('/login', function(req,res,next){
-  if(!req.user)
-  {
-    res.render('auth/login',
-      {
-      title:'Login',
-      message: req.flash('loginMessage')
-      }
 
-    )
-  }
-  else
-  {
-    return res.redirect("/")
-  }
-});
-
-// Post method for login
-router.post('/login', function(req,res,next){
-  passport.authenticate('local',(err,user,info)=>{
-    if(err)
-    {
-      return next(err);
-    }
-    if(!user)
-    {
-      req.flash('loginMessage','AuthenticationError');
-      return res.redirect('/login');
-    }
-    req.login(user,(err)=>{
-    if(err)
-    {
-      return next(err);
-    }
-    return res.redirect("/books")
-    })
-  })(req,res,next)
-});
 
 module.exports = router;

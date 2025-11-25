@@ -15,7 +15,8 @@ router.get('/',async(req,res,next)=>{
         const MovieList = await Movie.find();
         res.render('Movies/list',{
             title:'Movies',
-            MovieList:MovieList
+            MovieList:MovieList,
+            displayName: req.user?req.user.displayName:""
         })
     }
     catch(err)
@@ -31,7 +32,8 @@ router.get('/add',async(req,res,next)=>{
  try
     {
         res.render('Movies/add',{
-            title:'Add Movie'
+            title:'Add Movie',
+            displayName: req.user?req.user.displayName:""
         })
     }
     catch(err)
@@ -74,7 +76,8 @@ router.get('/edit/:id',async(req,res,next)=>{
             res.render('Movies/edit',
                 {
                     title:'Edit Movie',
-                    Movie: movieToEdit
+                    Movie: movieToEdit,
+                    displayName: req.user?req.user.displayName:""
                 }
             )
     }

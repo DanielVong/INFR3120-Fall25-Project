@@ -1,14 +1,12 @@
-<%- include ./partials/header.ejs %>
-<%- include ./partials/main_nav.ejs %>
-<h1>Movies</h1>
-
-<div>
-    <a href="/home">Home</a>
-</div>
+<%- include ../partials/header.ejs %>
+<%- include ../partials/main_nav.ejs %>
 <div style="margin: 20px;">
     <h3>Movie List</h3>
-    <a href="/movies/add" class="btn btn-primary" role="button">Add New Movie</a>
+    <% if(typeof displayName=='string' && displayName) { %>
+        <a href="/movies/add" class="btn btn-primary" role="button">Add New Movie</a>
+    <% } %>
     <table border="1" cellpadding="10" style="width: 100%">
+        <% if(typeof displayName=='string' && displayName) { %>
         <thead>
             <tr>
                 <th>Movie Title</th>
@@ -19,7 +17,8 @@
             </tr>
         </thead>
         <tbody>
-                <% for(let count = 0; count<MovieList.length;count++){%>
+                
+            <% for(let count = 0; count<MovieList.length;count++){%>
                 <tr>
                     <td><%= MovieList[count].name %></td>
                     <td><%= MovieList[count].description %></td>
@@ -39,7 +38,29 @@
                     </td>
                 </tr>
             <% } %>
+            <% } else { %>
+            <thead>
+            <tr>
+                <th>Movie Title</th>
+                <th>Description</th>
+                <th>Year of Release</th>
+                <th>Duration (min)</th>
+                <th>Timeframe</th>
+            </tr>
+        </thead>
+        <tbody>
+                
+            <% for(let count = 0; count<MovieList.length;count++){%>
+                <tr>
+                    <td><%= MovieList[count].name %></td>
+                    <td><%= MovieList[count].description %></td>
+                    <td><%= MovieList[count].release %></td>
+                    <td><%= MovieList[count].duration %></td>
+                    <td><%= MovieList[count].timeframe %></td>
+                </tr>
+            <% } %>
+            <% } %>
         </tbody>
     </table>
 </div>
-<%- include ./partials/footer.ejs %>
+<%- include ../partials/footer.ejs %>
