@@ -69,4 +69,45 @@ req.logout(function(err)
 })
 res.redirect("/");
 })
+
+// Get method for login
+router.get('/login', function(req,res,next){
+  if(!req.user)
+  {
+    res.render('auth/login',
+      {
+      title:'Login',
+      message: req.flash('loginMessage')
+      }
+
+    )
+  }
+  else
+  {
+    return res.redirect("/")
+  }
+});
+
+// Post method for login
+router.post('/login', function(req,res,next){
+  passport.authenticate('local',(err,user,info)=>{
+    if(err)
+    {
+      return next(err);
+    }
+    if(!user)
+    {
+      req.flash('loginMessage','AuthenticationError');
+      return res.redirect('/login');
+    }
+    req.login(user,(err)=>{
+    if(err)
+    {
+      return next(err);
+    }
+    return res.redirect("/books")
+    })
+  })(req,res,next)
+});
+
 module.exports = router;
