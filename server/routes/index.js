@@ -127,13 +127,13 @@ router.get('/auth/github/callback',
     // Successful authentication, redirect home.
     res.redirect('/');
   });
-app.get('/auth/linkedin',
+router.get('/auth/linkedin',
   passport.authenticate('linkedin', { state: 'SOME STATE'  }),
   function(req, res){
     // The request will be redirected to LinkedIn for authentication, so this
     // function will not be called.
   });
-app.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
+router.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
   successRedirect: '/',
   failureRedirect: '/login'
  }));
