@@ -40,6 +40,84 @@ passport.deserializeUser(User.deserializeUser());
 // initialize the passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Google OAuth Strategy
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK
+  },
+  async function(accessToken, refreshToken, profile, cb) {
+    try {
+      // Check if user already exists
+      let user = await User.findOne({ googleId: profile.id });
+      
+      if (!user) {
+        // Create new user if doesn't exist
+        user = await User.create({
+          googleId: profile.id,
+          displayName: profile.displayName,
+          email: profile.emails?.[0]?.value || '',
+          username: profile.emails?.[0]?.value || `google_${profile.id}`
+        });
+      }
+      
+      return cb(null, user);
+    } catch (err) {
+      return cb(err, null);
+    }
+  }
+));
+
+// GitHub OAuth Strategy
+var GitHubStrategy = require('passport-github2').Strategy;
+
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.GITHUB_CALLBACK
+  },
+  async function(accessToken, refreshToken, profile, done) {
+    try {
+      // Check if user already exists
+      let user = await User.findOne({ githubId: profile.id });
+      
+      if (!user) {
+        // Create new user if doesn't exist
+        user = await User.create({
+          githubId: profile.id,
+          displayName: profile.displayName || profile.username,
+          email: profile.emails?.[0]?.value || '',
+          username: profile.username || `github_${profile.id}`
+        });
+      }
+      
+      return done(null, user);
+    } catch (err) {
+      return done(err, null);
+    }
+  }
+));
+
+var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+
+passport.use(new LinkedInStrategy({
+  clientID: process.env.LINKEDIN_KEY,
+  clientSecret: process.env.LINKEDIN_SECRET,
+  callbackURL: process.env.LINKEDIN_CALLBACK,
+  scope: ['r_emailaddress', 'r_liteprofile'],
+}, function(accessToken, refreshToken, profile, done) {
+  // asynchronous verification, for effect...
+  process.nextTick(function () {
+    // To keep the example simple, the user's LinkedIn profile is returned to
+    // represent the logged-in user. In a typical application, you would want
+    // to associate the LinkedIn account with a user record in your database,
+    // and return that user instead.
+    return done(null, profile);
+  });
+}));
 var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
 

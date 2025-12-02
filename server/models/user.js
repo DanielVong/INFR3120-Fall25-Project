@@ -6,47 +6,56 @@ const { collection } = require('./movie');
 let User = mongoose.Schema({
     username:
     {
-        type:String,
-        default:"",
-        trim:true,
-        required:'Username is required'
-    },
-    password:
-    {
-        type:String,
-        default:"",
-        trim:true,
-        required:'Password is required'
+        type: String,
+        default: "",
+        trim: true,
+        required: false  
     },
     email:
     {
-        type:String,
-        default:"",
-        trim:true,
-        required:'email is required'
+        type: String,
+        default: "",
+        trim: true,
+        required: false  
     },
     displayName:
     {
-        type:String,
-        default:"",
-        trim:true,
-        required:'displayName is required'
+        type: String,
+        default: "",
+        trim: true,
+        required: false  
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true  
+    },
+    githubId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    linkedinId: {
+        type: String,
+        unique: true,
+        sparse: true
     },
     created:
     {
-        type:Date,
-        default:Date.now
+        type: Date,
+        default: Date.now
     },
     updated:
     {
-        type:Date,
-        default:Date.now
+        type: Date,
+        default: Date.now
     }
 },
 {
-    collection:"user"
+    collection: "user"
 }
 )
-let options = ({MissingPasswordError:'Wrong/Missing Password'});
-User.plugin(passportLocalMongoose,options);
-module.exports.User = mongoose.model('User',User);
+
+let options = ({ missingPasswordError: 'Wrong/Missing Password' });
+User.plugin(passportLocalMongoose, options);
+module.exports.User = mongoose.model('User', User);
