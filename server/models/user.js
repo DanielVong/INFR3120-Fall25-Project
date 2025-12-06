@@ -11,6 +11,13 @@ let User = mongoose.Schema({
         trim: true,
         required: false  
     },
+    password:
+    {
+        type: String,
+        default : "",
+        trim: true,
+        required: false
+    },
     email:
     {
         type: String,
