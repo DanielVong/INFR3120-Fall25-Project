@@ -1,0 +1,54 @@
+<%- include ../partials/header.ejs %>
+<%- include ../partials/main_nav.ejs %>
+
+<main class="container">
+    <% if(message && message.length > 0) { %>
+        <div class="alert alter-danger">
+            <%= message %>
+        </div>
+    <% } %>
+    
+    <% if(success && success.length > 0) { %>
+        <div class="alert alert-success">
+            <%= success %>
+        </div>
+    <% } %>
+    
+    <div class="row">
+        <div class="offset-md-4 col-md-4">
+            <h1>Change Password</h1>
+            <form method="post" autocomplete="off">
+                <fieldset class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" class="form-control"
+                        name="currentPassword"
+                        placeholder="Enter current password"
+                        id="currentPassword" required>
+                </fieldset>
+                
+                <fieldset class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" class="form-control"
+                        name="newPassword"
+                        placeholder="Enter new password"
+                        id="newPassword" required>
+                </fieldset>
+                
+                <fieldset class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" class="form-control"
+                        name="confirmPassword"
+                        placeholder="Confirm new password"
+                        id="confirmPassword" required>
+                </fieldset>
+                
+                <fieldset class="form-group text-right">
+                    <input type="submit" class="btn btn-success" value="Change Password">
+                    <a href="/" class="btn btn-warning">Cancel</a>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include ../partials/footer.ejs %>

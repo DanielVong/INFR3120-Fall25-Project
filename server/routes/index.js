@@ -137,4 +137,74 @@ router.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
   successRedirect: '/',
   failureRedirect: '/login'
  }));
+
+// Checks if the user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+// GET route for changing password page
+router.get('/changepass', isLoggedIn, function(req, res, next) {
+    // Checks if user has social login IDs, if yes password changing is not allowed
+    if (req.user.googleId || req.user.githubId || req.user.linkedinId) {
+        req.flash('loginMessage', 'Password change is only available for local accounts. Please use your social login provider.');
+        return res.redirect('/');
+    }
+    
+    res.render('auth/changepass', {
+        title: 'Change Password',
+        message: req.flash('changePasswordMessage'),
+        success: req.flash('changePasswordSuccess'),
+        displayName: req.user ? req.user.displayName : ""
+    });
+});
+
+// POST route for processing password change
+router.post('/changepass', isLoggedIn, function(req, res, next) {
+    // Checks if user has social login IDs, if yes, password change not allowed
+    if (req.user.googleId || req.user.githubId || req.user.linkedinId) {
+        req.flash('changePasswordMessage', 'Password change is only available for local accounts. Please use your social login provider.');
+        return res.redirect('/changepass');
+    }
+    
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    
+    // Makes sure all fields are filled
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        req.flash('changePasswordMessage', 'All fields are required');
+        return res.redirect('/changepass');
+    }
+    
+    // Check if the new passwords match
+    if (newPassword !== confirmPassword) {
+        req.flash('changePasswordMessage', 'New passwords do not match');
+        return res.redirect('/changepass');
+    }
+
+    // Checks if they're trying to use same password
+    if (currentPassword === newPassword) {
+        req.flash('changePasswordMessage', 'New password must be different from current password');
+        return res.redirect('/changepass');
+    }
+
+    req.user.changePassword(currentPassword, newPassword, function(err) {
+        if (err) {
+            if (err.name === 'IncorrectPasswordError') {
+                req.flash('changePasswordMessage', 'Current password is incorrect');
+            } else {
+                console.error('Password change error:', err);
+                req.flash('changePasswordMessage', 'Error changing password');
+            }
+            return res.redirect('/changepass');
+        }
+        
+        req.flash('changePasswordSuccess', 'Password changed successfullly!');
+        res.redirect('/changepass');
+    });
+});
+
+
 module.exports = router;
